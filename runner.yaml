@@ -1,0 +1,32 @@
+services:
+  runner:
+    image: 'data.forgejo.org/forgejo/runner:6.3.1'
+    links:
+      - docker-in-docker
+    depends_on:
+      docker-in-docker:
+        condition: service_started
+    container_name: 'runner'
+    environment:
+      DOCKER_HOST: tcp://docker-in-docker:2375
+    # User without root privileges, but with access to `./data`.
+    user: root:root
+    volumes:
+      - ./data:/data
+    restart: 'unless-stopped'
+    # Before registeration
+    # command: '/bin/sh -c "while : ; do sleep 1 ; done ;"'
+    # After registeration
+    command: '/bin/sh -c "sleep 5; forgejo-runner daemon"'
+  
+  docker-in-docker:
+    image: docker.io/library/docker:28.1.1-dind
+    container_name: 'docker_dind'
+    privileged: 'true'
+    command: ['dockerd', '-H', 'tcp://0.0.0.0:2375', '--tls=false']
+    restart: 'unless-stopped'
+
+
+## When registering locally, you can't access the localhost from the podman container
+## To access the forgejo instance that runs in localhost:3000, 
+## Specify the instance's url to be = http://host.containers.internal:3000
