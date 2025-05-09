@@ -1,3 +1,5 @@
 forgejo/*
 
 postgres/*
+
+data/**
