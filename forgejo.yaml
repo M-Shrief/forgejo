@@ -4,6 +4,7 @@ networks:
 
 services:
   server:
+    ### If you can't access it from codeberg, access it from forgejo repository.
     image: codeberg.org/forgejo/forgejo:11.0.1
     # image: data.forgejo.org/forgejo/forgejo:11.0.1
     container_name: forgejo
@@ -29,7 +30,7 @@ services:
       - db
 
   db:
-    image: postgres:16.3-alpine
+    image: docker.io/library/postgres:16.3-alpine
     restart: unless-stopped
     environment:
       - POSTGRES_USER=forgejo
