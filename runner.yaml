@@ -10,7 +10,8 @@ services:
     environment:
       DOCKER_HOST: tcp://docker-in-docker:2375
     # User without root privileges, but with access to `./data`.
-    user: 1001:1001
+    # user: 1001:1001
+    user: root
     volumes:
       - ./data:/data
     restart: 'unless-stopped'
